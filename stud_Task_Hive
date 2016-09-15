@@ -1,0 +1,10 @@
+create table student (name string ,pagal string, rno int) row format delimited fields terminated by '||' stored as textfile;
+load data local inpath '/home/cloudera/Desktop/student.dat' into table student;
+
+create table result (rno int,fool string, res string) row format delimited fields terminated by '||' stored as textfile;
+load data local inpath '/home/cloudera/Desktop/results.dat' into table result;
+
+select s.rno, s.name , r.res  from student s JOIN result r ON s.rno = r.rno and r.res=‘fail’;
+
+select s.rno, s.name , r.res  from student s JOIN result r ON s.rno = r.rno and r.res=‘pass’;
+

@@ -1,0 +1,12 @@
+create table server (d string, t string, module string, log string) row format delimited fields terminated by ',' stored as textfile;
+load data local inpath '/home/cloudera/Desktop/sample.log' into table server;
+
+//task1
+
+select log, count(*) from server group by log;
+
+//task 2
+
+select MAX(module) from server;
+
+select module, count(*) from server group by module order by module DESC limit 1;
