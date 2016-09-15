@@ -1,0 +1,15 @@
+create table customer(id int, name string, fname string,age int, occ string) row format delimited fields terminated by ',' stored as textfile;
+load data local inpath '/home/cloudera/Desktop/custs-small.dat' into table customer;
+
+create table transaction(tid int, d string,id int,amt double,x string,y string,z string,a string, b string) row format delimited fields terminated by ',' stored as textfile;
+load data local inpath '/home/cloudera/Desktop/txns-small.dat' into table transaction;
+
+create table tran_Res(tid int, amtsum double, tidcount int) row format delimited fields terminated by ',';
+
+insert overwrite table tran_Res select id, SUM(amt), COUNT(id)from transaction group by id;
+
+//task1
+select c.id, c.name , c.fname , t.amtsum, t.tidcount from customer c JOIN tran_Res t ON c.id = t.tid;
+
+//task2
+select c.id, c.name , c.fname , t.amtsum from customer c JOIN tran_Res t ON c.id = t.tid order by t.amtsum DESC limit 1;
