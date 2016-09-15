@@ -1,0 +1,18 @@
+create table movies(id int, name string, year int, rating double, time int) row format delimited fields terminated by ',' stored as textfile;
+load data local inpath '/home/cloudera/Desktop/MoviesDetails.dat' into table movies;
+select count(*) from movies where year>=1945 and year<=1959;
+
+//task 2
+
+select count(*) from movies where rating>3.9;
+
+//task3
+
+select count(*) from movies where time>1.5*60;
+
+//task4
+
+select years, count(*) from movies group by years;
+
+//task5
+select count(*) from movies;
