@@ -1,0 +1,23 @@
+
+//task 1
+create table cen_int(age int, income double) row format delimited fields terminated by ',' stored as textfile;
+
+insert overwrite table cen_int select get_json_object(value,"$.Age"), get_json_object(value,"$.Income") from census_data;
+
+create table jAgeCen(age int,cat string, income double) row format delimited fields terminated by ',' stored as textfile;
+
+insert overwrite table jAgeCen select a.id , a.cat , c.income from age_grp a JOIN cen_int c ON a.id = c.age;
+
+select cat , AVG(income) from jAgeCen group by cat;
+
+
+//task2
+create table cen_int2(age int, gender string) row format delimited fields terminated by ',' stored as textfile;
+
+insert overwrite table cen_int2 select  get_json_object(value,"$.Age"), get_json_object(value, "$.Gender") from census_data;
+
+create table jAgeCen2(age int, cat string, gender string) row format delimited fields terminated by ',' stored as textfile;
+
+insert overwrite table jAgeCen2 select a.id, a.cat, c.gender from age_grp a JOIN cen_int2 c ON a.id = c.age; 
+
+select cat, gender, COUNT(gender) from jAgeCen2 group by cat,gender;
